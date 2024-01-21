@@ -3,7 +3,7 @@ import ListGroupComponent from './list-group';
 
 // This default export determines where your story goes in the story list
 export default {
-    title: 'ListGroup',
+    title: 'Components/ListGroup',
     component: ListGroupComponent,
     parameters: {
         docs: {
@@ -269,6 +269,3 @@ const Template = (args) => (
     />
 );
 export const Default = Template.bind({});
-// Default.args = {
-//   // props to pass to your FromGroup, if any
-// };

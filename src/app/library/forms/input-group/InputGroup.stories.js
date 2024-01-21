@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import InputGroup from './input-group';
 
 export default {
-    title: 'Components/InputGroup',
+    title: 'FromGroup/InputGroup',
     component: InputGroup,
     argTypes: {
         onChange: { action: 'changed' },
