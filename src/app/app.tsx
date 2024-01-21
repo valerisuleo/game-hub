@@ -1,14 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss';
 
-import NxWelcome from './nx-welcome';
+import RoutingModule from './router';
 
 export function App() {
-  return (
-    <div>
-      <NxWelcome title="compugames" />
-    </div>
-  );
+    return <RoutingModule></RoutingModule>;
 }
 
 export default App;
