@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import InputGroup from '../input-group/input-group';
+import SelectComponent from '../select/select';
 
 interface ReactiveFormConfig {
     resetOnSchemaChange?: boolean; // The '?' makes it an optional property
@@ -35,7 +36,7 @@ export function useReactiveForm(
     };
 
     const handleBlur = (e) => {
-        const current = e.target;        
+        const current = e.target;
         const value = formGroup[current.name];
     };
 
@@ -60,7 +61,24 @@ export function useReactiveForm(
         );
     }
 
-    return {formGroup, handleChange, handleSubmit, handleBlur, renderInput};
+    function renderSelect(controller, handleChange, handleBlur, formGroup, valueProp, textProp) {
+        const { label, name, options, type } = controller;
+        return (
+            <SelectComponent
+                label={label}
+                name={name}
+                value={formGroup[name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                type={type}
+                options={options}
+                textProp={textProp}
+                valueProp={valueProp}
+            />
+        );
+    }
+
+    return { formGroup, handleChange, handleSubmit, handleBlur, renderInput, renderSelect };
 }
 
 export default useReactiveForm;

@@ -1,14 +1,6 @@
-import { IFormInputField } from './interfaces';
+import { IFormCtrl } from '../hooks/interfaces';
 
-const InputGroup = ({
-    label,
-    value,
-    onChange,
-    onBlur,
-    name,
-    type,
-    placeholder,
-}: IFormInputField) => {
+const InputGroup = ({ label, value, onChange, onBlur, name, type, placeholder }: IFormCtrl) => {
     return (
         <div className="mb-3">
             <label htmlFor={name} className="form-label">

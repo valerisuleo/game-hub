@@ -47,14 +47,10 @@ const FormGroup = () => {
 
     const [controllers, setControllers] = useState([]);
     const [form, setForm] = useState(formMaker(formControllers));
-    const { formGroup, handleChange, handleSubmit, handleBlur, renderInput } = useReactiveForm(
-        form,
-        formControllers,
-        doSubmit,
-        {
+    const { formGroup, handleChange, handleSubmit, handleBlur, renderInput, renderSelect } =
+        useReactiveForm(form, formControllers, doSubmit, {
             resetOnSchemaChange: true,
-        }
-    );
+        });
 
     useEffect(() => {
         setControllers(formControllers);
@@ -80,6 +76,18 @@ const FormGroup = () => {
                     <Fragment key={ctrl.id}>
                         {ctrl.type === 'text' || ctrl.type === 'password' ? (
                             <div>{renderInput(ctrl, handleChange, handleBlur, formGroup)}</div>
+                        ) : null}
+                        {ctrl.type === 'select' ? (
+                            <div>
+                                {renderSelect(
+                                    ctrl,
+                                    handleChange,
+                                    handleBlur,
+                                    formGroup,
+                                    'value',
+                                    'label'
+                                )}
+                            </div>
                         ) : null}
                     </Fragment>
                 ))}
