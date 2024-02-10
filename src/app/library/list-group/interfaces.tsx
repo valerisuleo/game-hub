@@ -9,4 +9,5 @@ export interface IListGroup {
     key: string;
     text: string;
     onEmitEvent: (item: IListItem) => void;
+    isHorizontal?: boolean;
 }

@@ -266,6 +266,15 @@ const Template = (args) => (
         key={'id'}
         text={'name'}
         onEmitEvent={handleSelection}
+        {...args}
     />
 );
 export const Default = Template.bind({});
+Default.args = {
+    isHorizontal: false,
+};
+
+export const Horizontal = Template.bind({});
+Horizontal.args = {
+    isHorizontal: true,
+};

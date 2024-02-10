@@ -1,4 +1,7 @@
-import { IFormCtrl } from "../hooks/interfaces";
+import ErrorsComponent from '../errors/errors-component';
+import { IFormCtrl } from '../hooks/interfaces';
+import styles from '../errors/errors-component.module.scss';
+import { capitalizeFirstLetter } from 'src/app/common/utilities';
 
 const SelectComponent = ({
     options,
@@ -10,15 +13,16 @@ const SelectComponent = ({
     name,
     type,
     value,
+    error,
 }: IFormCtrl) => {
     return (
         <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">
-                {label}
+            <label htmlFor={name} className="form-label">
+                {capitalizeFirstLetter(label)}
             </label>
 
             <select
-                className="form-select"
+                className={`form-select ${error ? styles.error : ''}`}
                 id={name}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -28,10 +32,11 @@ const SelectComponent = ({
             >
                 {options?.map((item) => (
                     <option key={item[valueProp]} value={item[valueProp]}>
-                        {item[textProp]}
+                        {capitalizeFirstLetter(item[textProp])}
                     </option>
                 ))}
             </select>
+            {error && <ErrorsComponent error={error} />}
         </div>
     );
 };

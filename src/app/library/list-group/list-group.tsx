@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IListGroup } from './interfaces';
 
-const ListGroupComponent = ({ collection, key, text, onEmitEvent }: IListGroup) => {
+const ListGroupComponent = ({ collection, key, text, onEmitEvent, isHorizontal }: IListGroup) => {
     const [isActive, setActive] = useState(-1);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +20,7 @@ const ListGroupComponent = ({ collection, key, text, onEmitEvent }: IListGroup) 
     };
 
     return (
-        <ul className="list-group">
+        <ul className={`list-group ${isHorizontal ? 'list-group-horizontal' : ''}`}>
             {collection?.map((item, i) => (
                 <li
                     key={item[key]}

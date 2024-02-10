@@ -3,54 +3,66 @@
 import { Fragment, useEffect, useState } from 'react';
 import { formMaker } from './hooks/utils';
 import useReactiveForm from './hooks/useReactiveForm';
+import { z } from 'zod';
 
 const FormGroup = () => {
     const formControllers = [
         {
-            type: 'text',
-            name: 'username',
-            label: 'Username',
+            type: "text",
+            name: "username",
+            label: "Username",
+            validators: [z.string().min(1)],
             options: [],
-            id: '6435bff3d16ecfa79bdcf3d9',
+            id: "6435bff3d16ecfa79bdcf3d9",
         },
+
         {
-            type: 'select',
-            name: 'age',
-            label: 'Age',
+            type: "select",
+            name: "age",
+            label: "Age",
             options: [
-                { value: '', label: 'Choose category' },
-                { value: '16', label: '16 years' },
-                { value: '21', label: '21 years' },
-                { value: '40', label: '40 years' },
+                { value: "", label: "Choose category" },
+                { value: "16", label: "16 years" },
+                { value: "21", label: "21 years" },
+                { value: "40", label: "40 years" },
             ],
-            id: '6435bff3d16ecfa79bdcf3ddasc',
+            validators: [z.string().min(1)],
+            id: "6435bff3d16ecfa79bdcf3ddasc",
         },
         {
-            type: 'radio',
-            name: 'radios',
-            label: 'Radio',
+            type: "radio",
+            name: "radios",
+            label: "Radio",
+            validators: [z.string().min(1)],
             options: [
-                { label: 'Option 1', value: 'option1' },
-                { label: 'Option 2', value: 'option2' },
+                { label: "Option 1", value: "option1" },
+                { label: "Option 2", value: "option2" },
                 // Add more options as needed
             ],
         },
         {
-            type: 'checkbox',
-            name: 'liked',
-            label: 'Liked',
+            type: "checkbox",
+            name: "liked",
+            label: "Liked",
             validators: [],
             options: [],
-            id: '6435bff3d16ecfa79bdcf3dz',
+            id: "6435bff3d16ecfa79bdcf3dz",
         },
     ];
 
     const [controllers, setControllers] = useState([]);
     const [form, setForm] = useState(formMaker(formControllers));
-    const { formGroup, handleChange, handleSubmit, handleBlur, renderInput, renderSelect } =
-        useReactiveForm(form, formControllers, doSubmit, {
-            resetOnSchemaChange: true,
-        });
+    const {
+        formGroup,
+        errorMessages,
+        handleChange,
+        handleSubmit,
+        handleBlur,
+        renderInput,
+        renderSelect,
+    } = useReactiveForm(form, formControllers, doSubmit, {
+        resetOnSchemaChange: false,
+    });
 
     useEffect(() => {
         setControllers(formControllers);
@@ -66,8 +78,8 @@ const FormGroup = () => {
             <div className="ms-3 mb-5">
                 <h1>Form controls</h1>
                 <p>
-                    Examples and usage guidelines for form control styles, layout options, and
-                    custom components.
+                    Examples and usage guidelines for form control styles,
+                    layout options, and custom components.
                 </p>
             </div>
 
@@ -75,7 +87,15 @@ const FormGroup = () => {
                 {controllers.map((ctrl) => (
                     <Fragment key={ctrl.id}>
                         {ctrl.type === 'text' || ctrl.type === 'password' ? (
-                            <div>{renderInput(ctrl, handleChange, handleBlur, formGroup)}</div>
+                            <div>
+                                {renderInput(
+                                    ctrl,
+                                    handleChange,
+                                    handleBlur,
+                                    formGroup,
+                                    errorMessages
+                                )}
+                            </div>
                         ) : null}
                         {ctrl.type === 'select' ? (
                             <div>
@@ -85,7 +105,8 @@ const FormGroup = () => {
                                     handleBlur,
                                     formGroup,
                                     'value',
-                                    'label'
+                                    'label',
+                                    errorMessages
                                 )}
                             </div>
                         ) : null}

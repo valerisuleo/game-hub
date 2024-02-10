@@ -9,7 +9,9 @@ interface FormValues {
     [key: string]: string | boolean;
 }
 
-export const formMaker = (array: FormItem[]): { [key: string]: string | boolean } => {
+export const formMaker = (
+    array: FormItem[]
+): { [key: string]: string | boolean } => {
     const obj = Object.assign(
         {},
         ...array.map((item) => ({
@@ -30,4 +32,22 @@ export const formUpdater = (
         }
         return acc;
     }, {} as FormValues);
+};
+
+export const processErrorMessages = (errors, label) => {
+    return errors
+        .map((err) => {
+            if (
+                err.message.includes(
+                    'String must contain at least 1 character(s)'
+                )
+            ) {
+                return `${label} is required`;
+            }
+            if (err.message.includes('String')) {
+                return err.message.replace('String', label);
+            }
+            return err.message;
+        })
+        .join(', ');
 };
