@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import useReactiveForm from 'src/app/library/forms/hooks/useReactiveForm';
 import { formMaker } from 'src/app/library/forms/hooks/utils';
 import useTable from 'src/app/library/tables/hooks/useTable';
@@ -83,34 +83,38 @@ const ExpenseTracker = () => {
         mode: 'default',
     });
 
-    function doSubmit() {
+    function doSubmit(): void {
         console.log('POST REQ', formGroup);
         createExpense();
         resetForm();
     }
 
-    function createExpense() {
-        const newData = [...expenses, formGroup];
-        const result: IExpense[] = newData.map((item) => ({
-            ...item,
-            actions: (currentRow) => renderActions(currentRow),
-        }));
-        setExpenses(result);
-        updateTable(result);
+    function createExpense(): void {
+        setExpenses((currentExpenses) => {
+            const newExpense: IExpense = {
+                ...formGroup,
+                actions: (currentRow) => renderActions(currentRow),
+            };
+
+            const updatedExpenses = [...currentExpenses, newExpense];
+            updateTable(updatedExpenses);
+
+            return updatedExpenses;
+        });
     }
 
+    function deleteExpense(currentRow: IExpense): void {
+        setExpenses((currentExpenses) => {
+            const updatedExpenses = currentExpenses.filter(
+                (item) => item.description !== currentRow.description
+            );
 
-    function deleteExpense(currentRow: IExpense) {
-        console.log('currentRow', currentRow);
-        const result: IExpense[] = expenses.filter(
-            (item) => item.description !== currentRow.description
-        );
-        console.log(result);
-        setExpenses(result);
-        updateTable(result);
+            updateTable(updatedExpenses);
+            return updatedExpenses;
+        });
     }
 
-    const handeleActions = (currentRow: IExpense, currentBtn: IButtonAction) => {
+    const handeleActions = (currentRow: IExpense, currentBtn: IButtonAction): void => {
         if (currentBtn.name === 'delete') {
             deleteExpense(currentRow);
         } else {
@@ -118,12 +122,11 @@ const ExpenseTracker = () => {
         }
     };
 
-
-    function renderActions(row: IExpense) {
+    function renderActions(row: IExpense): React.ReactNode {
         return actions.map((btn: IButtonAction, i) => (
             <button
                 key={i}
-                className={`me-2 btn btn-sm btn-${btn.classes}`}
+                className={`me-2 btn btn-sm btn-outline-${btn.classes}`}
                 onClick={() => handeleActions(row, btn)}
             >
                 {btn.label}

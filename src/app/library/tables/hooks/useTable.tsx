@@ -9,16 +9,12 @@ function useTable<T>(data: T[], columns: Column[], config: Config) {
 
     function renderRow() {
         const preparedRows = dataSource.map((row) => {
-            console.log(row, dataSource);
-
             return columns.map((column) => {
                 return row[column.name];
             });
         });
 
         if (config.mode === 'default') {
-            console.log(preparedRows);
-
             return preparedRows.map((row, rowIndex) => {
                 return (
                     <tr key={rowIndex}>
@@ -40,17 +36,25 @@ function useTable<T>(data: T[], columns: Column[], config: Config) {
     const handleSort = (current) => {
         if (config.sortable) {
             const { name } = current;
-            const clone = [...dataSource];
             const newOrder = order === 'asc' ? 'desc' : 'asc';
             setOrder(newOrder);
 
-            const sortedList = _.orderBy(clone, [(item) => item[name].toLowerCase()], [newOrder]);
+            const sortedList = _.orderBy(
+                dataSource,
+                [
+                    (item) => {
+                        const value = item[name];
+                        return typeof value === 'string' ? value.toLowerCase() : value;
+                    },
+                ],
+                [newOrder]
+            );
 
             setDataSource(sortedList);
         }
     };
 
-    const updateTable = (newData: any[]) => {
+    const updateTable = (newData: T[]) => {
         setDataSource(newData);
     };
 
