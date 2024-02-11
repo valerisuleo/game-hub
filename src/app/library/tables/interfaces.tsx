@@ -12,5 +12,5 @@ export interface ITable {
     tableHeader: Column[];
     tableBody: React.ReactNode;
     onSort: (column: Column) => void;
-    classes?: 'bordered' | 'striped';
+    classes?: 'bordered' | 'striped' | 'striped table-hover' | 'hover';
 }
