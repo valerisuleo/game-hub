@@ -1,68 +1,16 @@
-import { z } from 'zod';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
 import useReactiveForm from 'src/app/library/forms/hooks/useReactiveForm';
 import { formMaker } from 'src/app/library/forms/hooks/utils';
 import useTable from 'src/app/library/tables/hooks/useTable';
 import TableComponent from 'src/app/library/tables/table';
 import AlertsComponent from 'src/app/library/alerts/alerts';
-import { Controller } from 'src/app/library/forms/hooks/interfaces';
 import { IButtonAction, IExpense } from './interfaces';
-import { Column } from 'src/app/library/tables/interfaces';
+import { formControllers, tableHeader, actions } from './config';
 
 const ExpenseTracker = () => {
-    const formControllers: Controller[] = [
-        {
-            type: 'text',
-            name: 'description',
-            label: 'description',
-            validators: [z.string().min(3)],
-            options: [],
-            id: '6435bff3d16ecfa79bdcf310',
-        },
-        {
-            type: 'text',
-            name: 'amount',
-            label: 'amount',
-            validators: [z.string().min(1)],
-            options: [],
-            id: '6435bff3d16ecfa79bdcf3d9',
-        },
-
-        {
-            type: 'select',
-            name: 'category',
-            label: 'category',
-            options: [
-                { value: '', label: 'Choose category' },
-                { value: 'grocery', label: 'grocery' },
-                { value: 'utilities', label: 'utilities' },
-                { value: 'entertainment', label: 'entertainment' },
-            ],
-            validators: [z.string().min(1)],
-            id: '6435bff3d16ecfa79bdcf3ddasc',
-        },
-    ];
-    const tableHeader: Column[] = [
-        ...formControllers.map((item) => ({ name: item.name })),
-        { name: 'actions' },
-    ];
-    const actions: IButtonAction[] = [
-        {
-            classes: 'warning',
-            label: 'Edit',
-            name: 'edit',
-        },
-        {
-            classes: 'danger',
-            label: 'Delete',
-            name: 'delete',
-        },
-    ];
-
     const [expenses, setExpenses] = useState<IExpense[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [controllers, setControllers] = useState(formControllers);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [form, setForm] = useState(formMaker(formControllers));
     const {
         formGroup,
