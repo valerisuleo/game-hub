@@ -1,36 +1,52 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import _ from 'lodash';
-
-interface Column {
-    colName: any;
-}
-
-interface Config {
-    sortable: boolean;
-    defaultSortOrder?: 'asc' | 'desc';
-}
+import { Column, Config } from '../interfaces';
 
 function useTable<T>(data: T[], columns: Column[], config: Config) {
-    console.log(config);
-
     const [dataSource, setDataSource] = useState<T[]>(data);
     const [order, setOrder] = useState(config.defaultSortOrder);
 
+    function renderRow() {
+        const preparedRows = dataSource.map((row) => {
+            console.log(row, dataSource);
+
+            return columns.map((column) => {
+                return row[column.name];
+            });
+        });
+
+        if (config.mode === 'default') {
+            console.log(preparedRows);
+
+            return preparedRows.map((row, rowIndex) => {
+                return (
+                    <tr key={rowIndex}>
+                        {row.map((cell, cellIndex) => (
+                            <td key={`${rowIndex}-${cellIndex}`}>
+                                {typeof cell === 'function'
+                                    ? cell(dataSource[rowIndex])
+                                    : _.startCase(cell)}
+                            </td>
+                        ))}
+                    </tr>
+                );
+            });
+        } else {
+            return preparedRows;
+        }
+    }
+
     const handleSort = (current) => {
         if (config.sortable) {
-            const { colName } = current;
+            const { name } = current;
             const clone = [...dataSource];
             const newOrder = order === 'asc' ? 'desc' : 'asc';
             setOrder(newOrder);
 
-            const sortedsList = _.orderBy(
-                clone,
-                [(item) => item[colName].toLowerCase()],
-                [newOrder]
-            );
+            const sortedList = _.orderBy(clone, [(item) => item[name].toLowerCase()], [newOrder]);
 
-            setDataSource(sortedsList);
+            setDataSource(sortedList);
         }
     };
 
@@ -38,25 +54,7 @@ function useTable<T>(data: T[], columns: Column[], config: Config) {
         setDataSource(newData);
     };
 
-    function renderRows() {
-        const preparedRows = dataSource.map((row) => {
-            return columns.map((column) => {
-                return row[column.colName];
-            });
-        });
-
-        return preparedRows.map((row, rowIndex) => {
-            return (
-                <tr key={rowIndex}>
-                    {row.map((cell, cellIndex) => (
-                        <td key={`${rowIndex}-${cellIndex}`}>{cell}</td>
-                    ))}
-                </tr>
-            );
-        });
-    }
-
-    return { columns, renderRows, updateTable, handleSort };
+    return { columns, tableBody: renderRow, updateTable, handleSort };
 }
 
 export default useTable;

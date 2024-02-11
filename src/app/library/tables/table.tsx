@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import _ from 'lodash';
 
-export interface ITable {
-    tableHeader: any;
-    tableBody: any;
-    onSort: any;
+interface TableColumn {
+    name: string;
 }
 
-const TableComponent = ({ tableHeader, tableBody, onSort }: ITable) => {
+interface ITable {
+    tableHeader: TableColumn[];
+    tableBody: React.ReactNode; // Assuming tableBody is JSX or any React node
+    onSort: (column: TableColumn) => void; // Specify the function signature for sorting
+}
+
+const TableComponent: React.FC<ITable> = ({ tableHeader, tableBody, onSort }) => {
     return (
         <table className="table">
             <thead>
                 <tr>
-                    {tableHeader.map((item, i) => (
-                        <th key={i} onClick={() => onSort(item)}>
-                            {item.colName.toUpperCase()}
+                    {tableHeader.map((item, index) => (
+                        <th key={index} onClick={() => item.name !== 'actions' && onSort(item)}>
+                            {item.name === 'actions' ? '' : _.startCase(item.name)}
                         </th>
                     ))}
                 </tr>
