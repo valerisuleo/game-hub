@@ -1,18 +1,9 @@
 import _ from 'lodash';
+import { ITable } from './interfaces';
 
-interface TableColumn {
-    name: string;
-}
-
-interface ITable {
-    tableHeader: TableColumn[];
-    tableBody: React.ReactNode; // Assuming tableBody is JSX or any React node
-    onSort: (column: TableColumn) => void; // Specify the function signature for sorting
-}
-
-const TableComponent: React.FC<ITable> = ({ tableHeader, tableBody, onSort }) => {
+const TableComponent: React.FC<ITable> = ({ tableHeader, tableBody, onSort, classes }) => {
     return (
-        <table className="table">
+        <table className={`table ${classes && `table-${classes}`}`}>
             <thead>
                 <tr>
                     {tableHeader.map((item, index) => (

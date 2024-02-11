@@ -7,3 +7,10 @@ export interface Config {
     defaultSortOrder?: 'asc' | 'desc';
     mode: 'default' | 'custom';
 }
+
+export interface ITable {
+    tableHeader: Column[];
+    tableBody: React.ReactNode;
+    onSort: (column: Column) => void;
+    classes?: 'bordered' | 'striped';
+}

@@ -3,6 +3,18 @@ import { Column } from 'src/app/library/tables/interfaces';
 import { z } from 'zod';
 import { IButtonAction } from './interfaces';
 
+
+export const mock = [
+    { description: 'pane', amount: '1', category: 'grocery' },
+    { description: 'latte', amount: '2', category: 'grocery' },
+    { description: 'uova', amount: '6', category: 'grocery' },
+    { description: 'apple tv', amount: '9.99', category: 'entertainment' },
+    { description: 'netflix', amount: '8.99', category: 'entertainment' },
+    { description: 'water', amount: '99.99', category: 'utilities' },
+];
+
+
+
 export const formControllers: Controller[] = [
     {
         type: 'text',
@@ -24,9 +36,9 @@ export const formControllers: Controller[] = [
     {
         type: 'select',
         name: 'category',
-        label: 'category',
+        label: 'Choose category',
         options: [
-            { value: '', label: 'Choose category' },
+            { value: '', label: '' },
             { value: 'grocery', label: 'grocery' },
             { value: 'utilities', label: 'utilities' },
             { value: 'entertainment', label: 'entertainment' },
@@ -40,6 +52,8 @@ export const tableHeader: Column[] = [
     ...formControllers.map((item) => ({ name: item.name })),
     { name: 'actions' },
 ];
+
+
 export const actions: IButtonAction[] = [
     {
         classes: 'warning',
@@ -52,3 +66,4 @@ export const actions: IButtonAction[] = [
         name: 'delete',
     },
 ];
+

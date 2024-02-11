@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
+// 2. Custom hooks and utilities
 import useReactiveForm from 'src/app/library/forms/hooks/useReactiveForm';
 import { formMaker } from 'src/app/library/forms/hooks/utils';
 import useTable from 'src/app/library/tables/hooks/useTable';
-import TableComponent from 'src/app/library/tables/table';
+// 3. Component imports
 import AlertsComponent from 'src/app/library/alerts/alerts';
+import SelectComponent from 'src/app/library/forms/select/select';
+import TableComponent from 'src/app/library/tables/table';
+// 4. Interface imports
 import { IButtonAction, IExpense } from './interfaces';
-import { formControllers, tableHeader, actions } from './config';
+// 5. Configuration or mock data imports
+import { actions, formControllers, mock, tableHeader } from './config';
 
 const ExpenseTracker = () => {
-    const [expenses, setExpenses] = useState<IExpense[]>([]);
+    const defaultList = mock.map((item) => ({
+        ...item,
+        actions: (currentRow) => renderActions(currentRow),
+    }));
+    const [expenses, setExpenses] = useState<IExpense[]>(defaultList);
     const [controllers, setControllers] = useState(formControllers);
+    const [filter, setFilter] = useState<string>('');
     const [form, setForm] = useState(formMaker(formControllers));
     const {
         formGroup,
@@ -44,7 +54,7 @@ const ExpenseTracker = () => {
                 actions: (currentRow) => renderActions(currentRow),
             };
 
-            const updatedExpenses = [...currentExpenses, newExpense];
+            const updatedExpenses = [newExpense, ...currentExpenses];
             updateTable(updatedExpenses);
 
             return updatedExpenses;
@@ -62,7 +72,32 @@ const ExpenseTracker = () => {
         });
     }
 
-    const handeleActions = (currentRow: IExpense, currentBtn: IButtonAction): void => {
+    function renderActions(row: IExpense): React.ReactNode {
+        return (
+            <div className="d-flex justify-content-evenly">
+                {actions.map((btn: IButtonAction, i) => (
+                    <button
+                        key={i}
+                        className={`me-2 btn btn-sm btn-outline-${btn.classes}`}
+                        onClick={() => handleActions(row, btn)}
+                    >
+                        {btn.label}
+                    </button>
+                ))}
+            </div>
+        );
+    }
+
+    function getOptions(): { value: string; label: string }[] {
+        return [
+            { value: 'all', label: 'All categories' },
+            ...formControllers
+                .find((item) => item.name === 'category')
+                .options.filter((el) => !!el.value),
+        ];
+    }
+
+    const handleActions = (currentRow: IExpense, currentBtn: IButtonAction): void => {
         if (currentBtn.name === 'delete') {
             deleteExpense(currentRow);
         } else {
@@ -70,17 +105,16 @@ const ExpenseTracker = () => {
         }
     };
 
-    function renderActions(row: IExpense): React.ReactNode {
-        return actions.map((btn: IButtonAction, i) => (
-            <button
-                key={i}
-                className={`me-2 btn btn-sm btn-outline-${btn.classes}`}
-                onClick={() => handeleActions(row, btn)}
-            >
-                {btn.label}
-            </button>
-        ));
-    }
+    const handleBlurFilter = (): void => {};
+    const handleInputChange = (e): void => {
+        const { value } = e.target;
+        const result =
+            value && value !== 'all'
+                ? expenses.filter((item) => item.category === value)
+                : expenses;
+        updateTable(result);
+        setFilter(value);
+    };
 
     return (
         <Fragment>
@@ -124,17 +158,34 @@ const ExpenseTracker = () => {
             <div className="row mt-5">
                 <div className="col-6 mx-auto">
                     {expenses.length ? (
-                        <TableComponent
-                            tableHeader={tableHeader}
-                            tableBody={tableBody()}
-                            onSort={handleSort}
-                        />
+                        <Fragment>
+                            <SelectComponent
+                                options={getOptions()}
+                                textProp="label"
+                                valueProp="value"
+                                onChange={handleInputChange}
+                                onBlur={handleBlurFilter}
+                                label="Filter by category"
+                                name="filter"
+                                value={filter}
+                                type={'select'}
+                            />
+
+                            <TableComponent
+                                tableHeader={tableHeader}
+                                tableBody={tableBody()}
+                                onSort={handleSort}
+                                classes="bordered"
+                            />
+                        </Fragment>
                     ) : (
                         <AlertsComponent classes="warning">
                             Oops! Fill the form to add an expense to the list...
                         </AlertsComponent>
                     )}
                 </div>
+
+                {/* <p>{JSON.stringify(expenses)}</p> */}
             </div>
         </Fragment>
     );

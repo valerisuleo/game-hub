@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import _ from 'lodash';
 import { Column, Config } from '../interfaces';
+import _ from 'lodash';
 
 function useTable<T>(data: T[], columns: Column[], config: Config) {
     const [dataSource, setDataSource] = useState<T[]>(data);
