@@ -6,10 +6,10 @@ import { IButtonAction } from './interfaces';
 
 export const mock = [
     { description: 'pane', amount: '1', category: 'grocery' },
-    { description: 'latte', amount: '2', category: 'grocery' },
-    { description: 'uova', amount: '6', category: 'grocery' },
     { description: 'apple tv', amount: '9.99', category: 'entertainment' },
+    { description: 'uova', amount: '6', category: 'grocery' },
     { description: 'netflix', amount: '8.99', category: 'entertainment' },
+    { description: 'latte', amount: '2', category: 'grocery' },
     { description: 'water', amount: '99.99', category: 'utilities' },
 ];
 

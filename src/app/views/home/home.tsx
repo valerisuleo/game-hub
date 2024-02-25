@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './home.module.scss';
-import ExpandableTextComponent from 'src/app/library/expandable-text/expandable-text';
+import ExpandableTextComponent from 'src/app/library/components/expandable-text/expandable-text';
 
 const Home = () => {
     const [game, setGame] = useState({

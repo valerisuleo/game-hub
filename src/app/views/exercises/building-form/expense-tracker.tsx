@@ -5,7 +5,7 @@ import useReactiveForm from 'src/app/library/forms/hooks/useReactiveForm';
 import { formMaker } from 'src/app/library/forms/hooks/utils';
 import useTable from 'src/app/library/tables/hooks/useTable';
 // 3. Component imports
-import AlertsComponent from 'src/app/library/alerts/alerts';
+import AlertsComponent from 'src/app/library/components/alerts/alerts';
 import SelectComponent from 'src/app/library/forms/select/select';
 import TableComponent from 'src/app/library/tables/table';
 // 4. Interface imports
@@ -20,7 +20,7 @@ const ExpenseTracker = () => {
     }));
     const [expenses, setExpenses] = useState<IExpense[]>(defaultList);
     const [controllers, setControllers] = useState(formControllers);
-    const [filter, setFilter] = useState<string>('');
+    const [category, setCategory] = useState<string>('');
     const [form, setForm] = useState(formMaker(formControllers));
     const {
         formGroup,
@@ -113,7 +113,7 @@ const ExpenseTracker = () => {
                 ? expenses.filter((item) => item.category === value)
                 : expenses;
         updateTable(result);
-        setFilter(value);
+        setCategory(value);
     };
 
     return (
@@ -167,7 +167,7 @@ const ExpenseTracker = () => {
                                 onBlur={handleBlurFilter}
                                 label="Filter by category"
                                 name="filter"
-                                value={filter}
+                                value={category}
                                 type={'select'}
                             />
 
