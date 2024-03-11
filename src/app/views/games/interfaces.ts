@@ -3,6 +3,7 @@ export interface IGame {
     name: string;
     background_image: string;
     parent_platforms: IPlatform[];
+    genres: IGenre[];
 }
 
 export interface IGenre {

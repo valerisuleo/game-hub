@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface IDarkMode {
     isDarkMode: boolean;
     className?: string;
@@ -16,4 +18,9 @@ export interface IClasses {
         | 'close'
         | 'light'
         | 'dark';
+}
+
+
+export interface Props {
+    children: ReactNode;
 }

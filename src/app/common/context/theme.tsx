@@ -1,12 +1,9 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { Props } from '../interfaces';
 
 interface ThemeContextType {
     isDarkMode: boolean;
     handleDarkMode: () => void;
-}
-
-interface Props {
-    children: ReactNode;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

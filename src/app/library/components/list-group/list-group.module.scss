@@ -1,7 +1,8 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.list-group-item-dark {
+    color: white;
+    background-color: #212529;
+
+    &:hover {
+        background-color: #6c757d;
+    }
+}

@@ -4,7 +4,7 @@ const CardComponent = ({ header, body, classes, isDarkMode }: ICard) => {
     const getClasses = () => {
         let className = 'card ';
         className += `${classes.equalHeight && 'h-100'} ${
-            isDarkMode && 'text-white bg-dark'
+            isDarkMode && 'text-white bg-secondary'
         }`;
 
         return className;
@@ -12,7 +12,7 @@ const CardComponent = ({ header, body, classes, isDarkMode }: ICard) => {
     return (
         <div className={getClasses()}>
             {header.children && (
-                <div className="card-header">{header.children}</div>
+                <div className="">{header.children}</div>
             )}
 
             {(body.children || body.cardTitle) && (

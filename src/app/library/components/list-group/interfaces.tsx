@@ -10,4 +10,6 @@ export interface IListGroup {
     text: string;
     onEmitEvent: (item: IListItem) => void;
     isHorizontal?: boolean;
+    isFlush?: boolean;
+    isDarkMode?: boolean;
 }

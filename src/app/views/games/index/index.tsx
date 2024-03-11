@@ -7,8 +7,6 @@ function GameIndex() {
     const { games } = useGames();
     const { isDarkMode } = useTheme();
 
-    console.log(games);
-
     return (
         <div className={`row ${isDarkMode && 'bg-dark'}`}>
             <h1>Welcome to GameIndex!</h1>

@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { IListGroup } from './interfaces';
-
-const ListGroupComponent = ({ collection, key, text, onEmitEvent, isHorizontal }: IListGroup) => {
+import styles from './list-group.module.scss'
+const ListGroupComponent = ({
+    collection,
+    key,
+    text,
+    onEmitEvent,
+    isHorizontal,
+    isFlush,
+    isDarkMode,
+}: IListGroup) => {
     const [isActive, setActive] = useState(-1);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,11 +24,20 @@ const ListGroupComponent = ({ collection, key, text, onEmitEvent, isHorizontal }
             classes += 'disabled';
         }
 
-        return classes;
+        if (isDarkMode) {
+            classes += styles['list-group-item-dark'];
+        }
+
+
+        return classes.trim();
     };
 
     return (
-        <ul className={`list-group ${isHorizontal ? 'list-group-horizontal' : ''}`}>
+        <ul
+            className={`list-group ${
+                isHorizontal ? 'list-group-horizontal ' : ''
+            }${isFlush ? 'list-group-flush' : ''}`}
+        >
             {collection?.map((item, i) => (
                 <li
                     key={item[key]}
