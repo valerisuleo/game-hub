@@ -21,12 +21,13 @@ const LikeComponent = ({ color, size, onEmitEvent }: ILike) => {
 
     return (
         <div>
-            {isActive 
-                ? <FaHeart {...props} data-testid="liked-icon" />
-                : <FaRegHeart {...props} data-testid="unliked-icon" />
-            }
+            {isActive ? (
+                <FaHeart {...props} data-testid="liked-icon" />
+            ) : (
+                <FaRegHeart {...props} data-testid="unliked-icon" />
+            )}
         </div>
     );
-    };
+};
 
 export default LikeComponent;

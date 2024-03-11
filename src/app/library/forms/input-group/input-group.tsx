@@ -1,7 +1,7 @@
 import ErrorsComponent from '../errors/errors-component';
 import { IFormCtrl } from '../hooks/interfaces';
 import styles from '../errors/errors-component.module.scss';
-import { capitalizeFirstLetter } from 'src/app/common/utilities';
+import _ from 'lodash';
 
 const InputGroup = ({
     label,
@@ -16,7 +16,7 @@ const InputGroup = ({
     return (
         <div className="mb-3">
             <label htmlFor={name} className="form-label">
-                {capitalizeFirstLetter(label)}
+                {_.startCase(label)}
             </label>
             <input
                 className={`form-control ${error ? styles.error : ''}`}

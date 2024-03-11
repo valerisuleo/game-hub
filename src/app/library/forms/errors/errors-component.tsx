@@ -1,5 +1,5 @@
+import _ from 'lodash';
 import { Fragment } from 'react';
-import { capitalizeFirstLetter } from 'src/app/common/utilities';
 
 interface IErrorsComponent {
     error: string;
@@ -13,7 +13,7 @@ const ErrorsComponent = ({ error }: IErrorsComponent) => (
     <Fragment>
         {parseError(error).map((err, index) => (
             <div key={index} className="d-flex align-items-start mb-3 invalid-feedback">
-                {capitalizeFirstLetter(err)}
+                {_.startCase(err)}
             </div>
         ))}
     </Fragment>

@@ -1,7 +1,7 @@
 import ErrorsComponent from '../errors/errors-component';
 import { IFormCtrl } from '../hooks/interfaces';
 import styles from '../errors/errors-component.module.scss';
-import { capitalizeFirstLetter } from 'src/app/common/utilities';
+import _ from 'lodash';
 
 const SelectComponent = ({
     options,
@@ -18,7 +18,7 @@ const SelectComponent = ({
     return (
         <div className="mb-3">
             <label htmlFor={name} className="form-label">
-                {capitalizeFirstLetter(label)}
+                {_.startCase(label)}
             </label>
 
             <select
@@ -32,7 +32,7 @@ const SelectComponent = ({
             >
                 {options?.map((item) => (
                     <option key={item[valueProp]} value={item[valueProp]}>
-                        {capitalizeFirstLetter(item[textProp])}
+                        {_.startCase(item[textProp])}
                     </option>
                 ))}
             </select>

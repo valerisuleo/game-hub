@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React, { Fragment, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import NavbarComponent from './library/components/navbar/navbar';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import NavbarComponent from './common/navbar/navbar';
 
-const HomeRouter = lazy(() => import('./views/home/home'));
+const GameRouter = lazy(() => import('./views/games/routes'));
 const ExercisesRouter = lazy(() => import('./views/exercises/routes'));
 
 const RoutingModule = () => {
@@ -13,7 +13,9 @@ const RoutingModule = () => {
             <main className="container-fluid">
                 <Suspense>
                     <Routes>
-                        <Route path="/" element={<HomeRouter />} />
+                        {/* Redirect from base path to /games */}
+                        <Route path="/" element={<Navigate replace to="/games" />} />
+                        <Route path="/games/*" element={<GameRouter />} />
                         <Route path="/exercises/*" element={<ExercisesRouter />} />
                     </Routes>
                 </Suspense>

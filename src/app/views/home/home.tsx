@@ -1,8 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './home.module.scss';
 import ExpandableTextComponent from 'src/app/library/components/expandable-text/expandable-text';
+import { IUser } from '../exercises/interfaces/users';
+import httpService from '../exercises/services/user-service';
 
 const Home = () => {
+    const [users, setUsers] = useState<IUser[]>([]);
+
+    useEffect(() => {
+        getUsers();
+    }, []);
+
+    async function getUsers(): Promise<void> {
+        const { request, cancel } = httpService.getAll<IUser>();
+        const { data } = await request;
+
+        console.log(data);
+        setUsers(data);
+        return cancel();
+    }
+
     const [game, setGame] = useState({
         id: 1,
         player: {
@@ -53,6 +70,14 @@ const Home = () => {
             </button>
 
             <ExpandableTextComponent {...textProps} />
+
+            <ul className="list-group">
+                {users.map((item: IUser) => (
+                    <li key={item.id} className="list-group-item">
+                        {item.name}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
