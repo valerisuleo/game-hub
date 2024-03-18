@@ -17,7 +17,7 @@ export const useTheme = () => {
 };
 
 const ThemeProvider = ({ children }: Props) => {
-    const [isDarkMode, setDarkMode] = useState<boolean>(true);
+    const [isDarkMode, setDarkMode] = useState<boolean>(false);
 
     const handleDarkMode = () => {
         setDarkMode((prevState) => !prevState);

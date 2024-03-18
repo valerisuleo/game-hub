@@ -13,6 +13,7 @@ export interface IFormCtrl {
     textProp?: string;
     valueProp?: string;
     placeholder?: string;
+    isDark?: boolean
 }
 
 // Assuming a simple key-value pair structure for the form schema.

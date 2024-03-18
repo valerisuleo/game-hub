@@ -14,6 +14,7 @@ const SelectComponent = ({
     type,
     value,
     error,
+    isDark,
 }: IFormCtrl) => {
     return (
         <div className="mb-3">
@@ -22,7 +23,9 @@ const SelectComponent = ({
             </label>
 
             <select
-                className={`form-select ${error ? styles.error : ''}`}
+                className={`form-select ${isDark && 'bg-dark text-white'}  ${
+                    error ? styles.error : ''
+                }`}
                 id={name}
                 onChange={onChange}
                 onBlur={onBlur}

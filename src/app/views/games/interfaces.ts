@@ -13,15 +13,16 @@ export interface IGenre {
     games: IGame[];
 }
 
-export interface IGameQuery {
-    games: IGame[];
-    genres: IGenre[];
-}
-
-interface IPlatform {
+export interface IPlatform {
     id: number;
     name: string;
     slug: string;
+    games_count?: number;
+    image_background?: string;
+    image?: null | string;
+    year_start?: null | number;
+    year_end?: null | number;
+    games?: IGame[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: any;
 }
