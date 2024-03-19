@@ -1,7 +1,7 @@
 import ErrorsComponent from '../errors/errors-component';
 import { IFormCtrl } from '../hooks/interfaces';
 import styles from '../errors/errors-component.module.scss';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
 
 const SelectComponent = ({
     options,
@@ -19,7 +19,7 @@ const SelectComponent = ({
     return (
         <div className="mb-3">
             <label htmlFor={name} className="form-label">
-                {_.startCase(label)}
+                {startCase(label)}
             </label>
 
             <select
@@ -35,7 +35,7 @@ const SelectComponent = ({
             >
                 {options?.map((item) => (
                     <option key={item[valueProp]} value={item[valueProp]}>
-                        {_.startCase(item[textProp])}
+                        {startCase(item[textProp])}
                     </option>
                 ))}
             </select>

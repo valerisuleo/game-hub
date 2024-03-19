@@ -7,6 +7,7 @@ import { CounterProvider } from './app/views/exercises/working-with-context/cont
 import { ContextProviderComposer } from './app/views/exercises/working-with-context/context/provider-composer/provider-composer';
 import ThemeProvider from './app/common/context/theme';
 import { SideNavProvider } from './app/common/side-nav/context/useSideNav';
+import { DataContextProvider } from './app/common/context/data';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -18,6 +19,7 @@ root.render(
                 <CounterProvider children={undefined} />,
                 <ThemeProvider children={undefined} />,
                 <SideNavProvider children={undefined} />,
+                <DataContextProvider children={undefined} />,
             ]}
         >
             <App />

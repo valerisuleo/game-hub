@@ -3,7 +3,7 @@ import { IListGroup } from './interfaces';
 import styles from './list-group.module.scss'
 const ListGroupComponent = ({
     collection,
-    key,
+    itemKey,
     text,
     onEmitEvent,
     isHorizontal,
@@ -40,7 +40,7 @@ const ListGroupComponent = ({
         >
             {collection?.map((item, i) => (
                 <li
-                    key={item[key]}
+                    key={item[itemKey]}
                     onClick={() => {
                         setActive(i);
                         onEmitEvent(item);

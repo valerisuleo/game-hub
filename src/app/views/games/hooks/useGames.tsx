@@ -1,64 +1,47 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { gameService } from '../service';
-import { IGame, IGenre } from '../interfaces';
+import { IGame } from '../interfaces';
 import { iconMap } from '../../../common/utilities';
-import { useSideNav } from '../../../common/side-nav/context/useSideNav';
-import { IEventEmitted } from '../../../common/interfaces';
+import { IEventEmitted, useDataContext } from '../../../common/context/data';
 
 const useGames = () => {
+    const { event } = useDataContext();
     const [isLoading, setSpinner] = useState(false);
     const [collection, setCollection] = useState<IGame[]>([]);
-    const { itemActive } = useSideNav();
-    const currentGenre: IGenre = itemActive;
+
+    useEffect(() => {
+        if (event && event.name) {
+            const { name, data } = event;
+
+            if (name === 'search') {
+                gamesQuery(`${name}=${data.value}`);
+            }
+
+            if (event?.name === 'genres') {
+                gamesQuery(`${name}=${data.id}`);
+            }
+        }
+    }, [event]);
 
     useEffect(() => {
         gamesQuery();
     }, []);
 
-    useEffect(() => {
-        if (currentGenre && currentGenre.id) {
-            getGamesByGenre();
-        }
-    }, [currentGenre]);
-
     async function gamesQuery(query?): Promise<void> {
         try {
             setSpinner(true);
+
             const endPoint = query ? `/games?${query}` : '/games';
-
-            console.log('endPoint', endPoint);
-
             const promise = gameService.get(endPoint);
             const { data } = await promise;
+
             setCollection(addIconProp(data.results));
         } catch (error) {
             console.log('global handler', error);
         } finally {
             setSpinner(false);
         }
-    }
-
-    function getGamesByGenre(): void {
-        gamesQuery(`genres=${currentGenre.id}`);
-    }
-
-    function getGamesByPlatform(current: IEventEmitted): void {
-        gamesQuery(`platforms=${current.value}`);
-    }
-
-    function getGamesBySortOrder(current: IEventEmitted): void {
-        gamesQuery(`ordering=${current.value}`);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function getGamesByPlatformAndSortOrder(current: {
-        name: string;
-        value: { platforms: string; sorting: '' };
-    }): void {
-        const { platforms, sorting } = current.value;
-        const queryParams = `platforms=${platforms}&ordering=${sorting}`;
-        gamesQuery(queryParams);
     }
 
     function addIconProp(list: IGame[]): IGame[] {
@@ -73,33 +56,36 @@ const useGames = () => {
         });
     }
 
-    function handleEvent(current: IEventEmitted): void {
+    function updateGamesList(current: IEventEmitted): void {
+        const { name, data } = current;
         const allPlatforms = '666';
         const isNotAllPlatforms =
-            current.value !== allPlatforms &&
-            current.value?.platforms !== allPlatforms;
+            data !== allPlatforms && data?.platforms !== allPlatforms;
 
         if (!isNotAllPlatforms) {
+            //reset
             gamesQuery();
             return;
         }
 
-        switch (current.name) {
+        switch (name) {
+            case 'platformAndOrdering':
+                gamesQuery(
+                    `platforms=${data.platforms}&ordering=${data.ordering}`
+                );
+                break;
+            case 'ordering':
+                gamesQuery(`${name}=${data}`);
+                break;
             case 'platforms':
-                getGamesByPlatform(current);
-                break;
-            case 'sorting':
-                getGamesBySortOrder(current);
-                break;
-            case 'platformAndSorting':
-                getGamesByPlatformAndSortOrder(current);
+                gamesQuery(`${name}=${data}`);
                 break;
             default:
-                console.log('current', current);
+                console.log('unexpected', current);
         }
     }
 
-    return { games: collection, handleEvent, isLoading };
+    return { games: collection, updateGamesList, isLoading };
 };
 
 export default useGames;

@@ -1,20 +1,17 @@
-import React from 'react';
 import useGenres from '../../views/games/hooks/useGenres';
 import ListGroupComponent from '../../library/components/list-group/list-group';
 import { IListGroup } from '../../library/components/list-group/interfaces';
 import { useTheme } from '../context/theme';
-import { useSideNav } from './context/useSideNav';
+import { useDataContext } from '../context/data';
 
 const SideNavComponent = () => {
     const { isDarkMode } = useTheme();
     const { genres } = useGenres();
-    const { handleSelection } = useSideNav();
-
-    // console.log('genres', genres);
+    const { outputEvent } = useDataContext();
 
     const props: IListGroup = {
         collection: genres,
-        key: 'id',
+        itemKey: 'id',
         text: 'name',
         isFlush: true,
         isDarkMode,
@@ -22,7 +19,10 @@ const SideNavComponent = () => {
     };
 
     function handleClick(current) {
-        handleSelection(current);
+        outputEvent({
+            name: 'genres',
+            data: current,
+        });
     }
 
     return (

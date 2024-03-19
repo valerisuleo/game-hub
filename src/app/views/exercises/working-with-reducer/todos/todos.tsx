@@ -54,7 +54,7 @@ const Todos = () => {
 
             <ListGroupComponent
                 collection={value}
-                key={'id'}
+                itemKey={'id'}
                 text={'title'}
                 onEmitEvent={(item) =>
                     dispatch({

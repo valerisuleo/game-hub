@@ -25,8 +25,3 @@ export interface Props {
     children: ReactNode;
 }
 
-export interface IEventEmitted {
-    name: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any;
-}

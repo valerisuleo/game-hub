@@ -4,22 +4,13 @@ import InputGroup from '../../library/forms/input-group/input-group';
 import ButtonComponent from '../../library/components/button/button';
 import { IBtn } from '../../library/components/button/interfaces';
 import { useTheme } from '../context/theme';
+import { useDataContext } from '../context/data';
 
 const NavbarComponent = () => {
     const { isDarkMode, handleDarkMode } = useTheme();
+    const { outputEvent } = useDataContext();
     const [isOpen, setOpen] = useState(false);
     const [value, setValue] = useState('');
-
-    const toggleBurgerMenu = () => {
-        setOpen((prevState) => {
-            const newState = !prevState;
-            return newState;
-        });
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    };
 
     const props: IBtn = {
         type: 'button',
@@ -33,11 +24,41 @@ const NavbarComponent = () => {
         className: 'light',
     };
 
+    const toggleBurgerMenu = () => {
+        setOpen((prevState) => {
+            const newState = !prevState;
+            return newState;
+        });
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setValue(value);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        outputEvent({
+            name: 'search',
+            data: {
+                value,
+            },
+        });
+        setValue('');
+    };
+
     const handleBlur = () => {};
     return (
-        <nav className={`navbar navbar-expand-lg bg-${isDarkMode ? 'dark' : 'light'}`}>
+        <nav
+            className={`navbar navbar-expand-lg bg-${
+                isDarkMode ? 'dark' : 'light'
+            }`}
+        >
             <div className="container-fluid">
-                <Link className={`navbar-brand ${isDarkMode && 'text-white'}`} to="/">
+                <Link
+                    className={`navbar-brand ${isDarkMode && 'text-white'}`}
+                    to="/"
+                >
                     Game Point
                 </Link>
                 <button
@@ -52,9 +73,15 @@ const NavbarComponent = () => {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className={`collapse navbar-collapse ${isOpen && 'show'}`} id="navbarNav">
+                <div
+                    className={`collapse navbar-collapse ${isOpen && 'show'}`}
+                    id="navbarNav"
+                >
                     <div className="d-flex" style={{ width: '100%' }}>
-                        <div className="flex-grow-1 me-5">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="flex-grow-1 me-5"
+                        >
                             <InputGroup
                                 label={''}
                                 name={'search'}
@@ -63,7 +90,7 @@ const NavbarComponent = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                        </div>
+                        </form>
                         <div className="d-flex align-items-center">
                             <ButtonComponent {...props} />
                         </div>

@@ -2,45 +2,22 @@
 import CardComponent from '../../../library/components/cards/card';
 import { useTheme } from '../../../common/context/theme';
 import useGames from '../hooks/useGames';
-import { cardProps } from './config';
+import { cardProps, sortOptions } from './config';
 import SelectComponent from '../../../library/forms/select/select';
 import usePlatforms from '../hooks/usePlatforms';
 import { Fragment, useEffect, useState } from 'react';
 import SpinnerComponent from '../../../library/components/spinner/spinner';
 import { IFormCtrl } from '../../../library/forms/hooks/interfaces';
-import { IEventEmitted } from '../../../common/interfaces';
+import { IEventEmitted } from '../../../common/context/data';
 
 function GameIndex() {
     const { isDarkMode } = useTheme();
     const { platforms } = usePlatforms();
-    const { games, handleEvent, isLoading } = useGames();
+    const { games, updateGamesList, isLoading } = useGames();
     const [filters, setFilters] = useState({
         platforms: '',
-        sorting: '',
+        ordering: '',
     });
-
-    const sortOptions = [
-        {
-            value: 'name',
-            label: 'Name',
-        },
-        {
-            value: '-added',
-            label: 'Date added',
-        },
-        {
-            value: '-released',
-            label: 'Date released',
-        },
-        {
-            value: '-metacritic',
-            label: 'Popularity',
-        },
-        {
-            value: '-rating',
-            label: 'Average rating',
-        },
-    ];
 
     const data: IFormCtrl[] = [
         {
@@ -55,9 +32,9 @@ function GameIndex() {
             options: platforms,
         },
         {
-            name: 'sorting',
+            name: 'ordering',
             label: 'order by:',
-            value: filters.sorting,
+            value: filters.ordering,
             onBlur: () => {},
             onChange: handleInputChange,
             type: 'select',
@@ -68,34 +45,34 @@ function GameIndex() {
     ];
 
     useEffect(() => {
-        if (filters.platforms && filters.sorting) {
-            handleEvent({
-                name: 'platformAndSorting',
-                value: filters,
+        if (filters.platforms && filters.ordering) {
+            updateGamesList({
+                name: 'platformAndOrdering',
+                data: filters,
             });
         }
     }, [filters]);
 
     function handleInputChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+        const allPlatforms = '666';
         const { value, name } = e.target;
-
-        const eventEmitted: IEventEmitted = { name, value };
-
+        const { platforms, ordering } = filters;
+        const item: IEventEmitted = { name, data: value };
         // Update filters before fetching data
         setFilters((prevState) => ({
             ...prevState,
             [name]: value,
         }));
-
         // Fetch data based on the new filter
-        handleEvent(eventEmitted);
-
-        // Check if the value is '666' after fetching data
-        if (value === '666') {
+        if ((!platforms && !ordering) || value === allPlatforms) {
+            updateGamesList(item);
+        }
+        // Check if the value is allPlatforms after fetching data
+        if (value === allPlatforms) {
             // Reset filters to their default state
             setFilters({
                 platforms: '',
-                sorting: '',
+                ordering: '',
             });
         }
     }
@@ -103,25 +80,25 @@ function GameIndex() {
     return (
         <div className={`row ${isDarkMode && 'bg-dark'}`}>
             <div className="d-flex justify-content-even">
-                {data.map((item) => (
-                    <div className='me-3'>
-                    <SelectComponent
-                        options={item.options}
-                        textProp={item.textProp}
-                        valueProp={item.valueProp}
-                        onChange={item.onChange}
-                        onBlur={item.onBlur}
-                        label={item.label}
-                        name={item.name}
-                        value={item.value}
-                        type={item.type}
-                        isDark={isDarkMode}
-                    />
+                {data.map((item, i) => (
+                    <div className="me-3 my-4" key={i}>
+                        <SelectComponent
+                            options={item.options}
+                            textProp={item.textProp}
+                            valueProp={item.valueProp}
+                            onChange={item.onChange}
+                            onBlur={item.onBlur}
+                            label={item.label}
+                            name={item.name}
+                            value={item.value}
+                            type={item.type}
+                            isDark={isDarkMode}
+                        />
                     </div>
                 ))}
             </div>
 
-            {JSON.stringify(filters)}
+            {/* {JSON.stringify(filters)} */}
 
             <div className="row">
                 {isLoading ? (

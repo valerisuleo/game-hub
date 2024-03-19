@@ -6,7 +6,7 @@ export interface IListItem {
 
 export interface IListGroup {
     collection: IListItem[];
-    key: string;
+    itemKey: string;
     text: string;
     onEmitEvent: (item: IListItem) => void;
     isHorizontal?: boolean;

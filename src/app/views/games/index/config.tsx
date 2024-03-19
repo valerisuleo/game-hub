@@ -55,3 +55,26 @@ export const cardProps = (item, isDarkMode): ICard => {
         isDarkMode,
     };
 };
+
+export const sortOptions = [
+    {
+        value: 'name',
+        label: 'Name',
+    },
+    {
+        value: '-added',
+        label: 'Date added',
+    },
+    {
+        value: '-released',
+        label: 'Date released',
+    },
+    {
+        value: '-metacritic',
+        label: 'Popularity',
+    },
+    {
+        value: '-rating',
+        label: 'Average rating',
+    },
+];
