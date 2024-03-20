@@ -5,7 +5,7 @@ import useGames from '../hooks/useGames';
 import { cardProps, sortOptions } from './config';
 import SelectComponent from '../../../library/forms/select/select';
 import usePlatforms from '../hooks/usePlatforms';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import SpinnerComponent from '../../../library/components/spinner/spinner';
 import { IFormCtrl } from '../../../library/forms/hooks/interfaces';
 import { IEventEmitted } from '../../../common/context/data';
@@ -44,29 +44,17 @@ function GameIndex() {
         },
     ];
 
-    useEffect(() => {
-        if (filters.platforms && filters.ordering) {
-            updateGamesList({
-                name: 'platformAndOrdering',
-                data: filters,
-            });
-        }
-    }, [filters]);
-
     function handleInputChange(e: React.ChangeEvent<HTMLSelectElement>): void {
         const allPlatforms = '666';
         const { value, name } = e.target;
-        const { platforms, ordering } = filters;
-        const item: IEventEmitted = { name, data: value };
+        const item: IEventEmitted = { name, data: { value } };
         // Update filters before fetching data
         setFilters((prevState) => ({
             ...prevState,
             [name]: value,
         }));
         // Fetch data based on the new filter
-        if ((!platforms && !ordering) || value === allPlatforms) {
-            updateGamesList(item);
-        }
+        updateGamesList(item);
         // Check if the value is allPlatforms after fetching data
         if (value === allPlatforms) {
             // Reset filters to their default state
@@ -98,7 +86,7 @@ function GameIndex() {
                 ))}
             </div>
 
-            {/* {JSON.stringify(filters)} */}
+            {JSON.stringify(filters)}
 
             <div className="row">
                 {isLoading ? (

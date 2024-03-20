@@ -12,7 +12,11 @@ const useGenres = () => {
     async function getGenres(): Promise<void> {
         const promise = gameService.get('/genres');
         const { data } = await promise;
-        setCollection(data.results);
+        const results = data.results.map((item) => ({
+            ...item,
+            value: item.id,
+        }));
+        setCollection(results);
     }
 
     return { genres: collection };

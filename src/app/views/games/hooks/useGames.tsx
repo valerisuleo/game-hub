@@ -6,42 +6,100 @@ import { iconMap } from '../../../common/utilities';
 import { IEventEmitted, useDataContext } from '../../../common/context/data';
 
 const useGames = () => {
-    const { event } = useDataContext();
+    const { event, outputEvent } = useDataContext();
     const [isLoading, setSpinner] = useState(false);
     const [collection, setCollection] = useState<IGame[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [queries, setQuery] = useState({
+        platforms: { isActive: false, value: '' },
+        genres: { isActive: false, value: '' },
+        ordering: { isActive: false, value: '' },
+        search: { isActive: false, value: '' },
+    });
 
     useEffect(() => {
-        if (event && event.name) {
-            const { name, data } = event;
+        if (event?.name) {
+            const { name } = event;
 
             if (name === 'search') {
-                gamesQuery(`${name}=${data.value}`);
+                getAll(event);
             }
 
-            if (event?.name === 'genres') {
-                gamesQuery(`${name}=${data.id}`);
+            if (name === 'genres') {
+                getAll(event);
             }
         }
     }, [event]);
 
     useEffect(() => {
-        gamesQuery();
+        getAll();
     }, []);
 
-    async function gamesQuery(query?): Promise<void> {
+    function getAll(item?: IEventEmitted): void {
         try {
             setSpinner(true);
 
-            const endPoint = query ? `/games?${query}` : '/games';
-            const promise = gameService.get(endPoint);
-            const { data } = await promise;
+            if (item && item.name) {
+                setQuery((prevQueries) => {
+                    const updatedQueries = {
+                        ...prevQueries,
+                        [item.name]: {
+                            ...prevQueries[item.name],
+                            isActive: true,
+                            value: item.data.value,
+                        },
+                    };
 
-            setCollection(addIconProp(data.results));
+                    fetchGames(`/games?${createQueryURL(updatedQueries)}`);
+
+                    return updatedQueries;
+                });
+            } else {
+                const reset = {
+                    platforms: { isActive: false, value: '' },
+                    genres: { isActive: false, value: '' },
+                    ordering: { isActive: false, value: '' },
+                    search: { isActive: false, value: '' },
+                };
+                setQuery(reset);
+
+                fetchGames('/games');
+            }
         } catch (error) {
             console.log('global handler', error);
         } finally {
             setSpinner(false);
         }
+    }
+
+    function updateGamesList(current: IEventEmitted): void {
+        console.log(current);
+
+        const { data } = current;
+        const allPlatforms = '666';
+        const isNotAllPlatforms = data.value !== allPlatforms;
+
+        if (!isNotAllPlatforms) {
+            //reset
+            getAll();
+            outputEvent({
+                name: 'resetActiveClass',
+                data: {
+                    reset: true,
+                },
+            });
+        } else {
+            getAll(current);
+        }
+    }
+
+    // _______________________________________UTILS_______________________________________
+    function fetchGames(endPoint: string): void {
+        gameService
+            .get(endPoint)
+            .then((response) =>
+                setCollection(addIconProp(response.data.results))
+            );
     }
 
     function addIconProp(list: IGame[]): IGame[] {
@@ -56,33 +114,27 @@ const useGames = () => {
         });
     }
 
-    function updateGamesList(current: IEventEmitted): void {
-        const { name, data } = current;
-        const allPlatforms = '666';
-        const isNotAllPlatforms =
-            data !== allPlatforms && data?.platforms !== allPlatforms;
+    function createQueryURL(object): string {
+        let url = '';
+        let firstPair = true; // To control the addition of '&' in the string
+        for (const key in object) {
+            if (Object.prototype.hasOwnProperty.call(object, key)) {
+                const query = object[key];
 
-        if (!isNotAllPlatforms) {
-            //reset
-            gamesQuery();
-            return;
+                if (query.isActive) {
+                    if (firstPair) {
+                        // For the first key-value pair, don't prepend '&' to the URL
+                        firstPair = false;
+                    } else {
+                        // For subsequent pairs, prepend '&' to separate the query parameters
+                        url += '&';
+                    }
+                    // Append the key-value pair to the URL
+                    url += `${key}=${query.value}`;
+                }
+            }
         }
-
-        switch (name) {
-            case 'platformAndOrdering':
-                gamesQuery(
-                    `platforms=${data.platforms}&ordering=${data.ordering}`
-                );
-                break;
-            case 'ordering':
-                gamesQuery(`${name}=${data}`);
-                break;
-            case 'platforms':
-                gamesQuery(`${name}=${data}`);
-                break;
-            default:
-                console.log('unexpected', current);
-        }
+        return url;
     }
 
     return { games: collection, updateGamesList, isLoading };

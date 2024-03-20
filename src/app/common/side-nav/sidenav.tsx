@@ -7,7 +7,7 @@ import { useDataContext } from '../context/data';
 const SideNavComponent = () => {
     const { isDarkMode } = useTheme();
     const { genres } = useGenres();
-    const { outputEvent } = useDataContext();
+    const { outputEvent, event } = useDataContext();
 
     const props: IListGroup = {
         collection: genres,
@@ -16,6 +16,7 @@ const SideNavComponent = () => {
         isFlush: true,
         isDarkMode,
         onEmitEvent: handleClick,
+        reset: event?.data.reset,
     };
 
     function handleClick(current) {

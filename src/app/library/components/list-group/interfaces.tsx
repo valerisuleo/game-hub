@@ -12,4 +12,5 @@ export interface IListGroup {
     isHorizontal?: boolean;
     isFlush?: boolean;
     isDarkMode?: boolean;
+    reset?: boolean;
 }

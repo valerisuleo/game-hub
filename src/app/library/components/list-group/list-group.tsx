@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IListGroup } from './interfaces';
-import styles from './list-group.module.scss'
+import styles from './list-group.module.scss';
 const ListGroupComponent = ({
     collection,
     itemKey,
@@ -9,8 +9,15 @@ const ListGroupComponent = ({
     isHorizontal,
     isFlush,
     isDarkMode,
+    reset = false,
 }: IListGroup) => {
     const [isActive, setActive] = useState(-1);
+
+    useEffect(() => {
+        if (reset) {
+            setActive(-1);
+        }
+    }, [reset]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const setClasses = (index: number, item?: any) => {
@@ -27,7 +34,6 @@ const ListGroupComponent = ({
         if (isDarkMode) {
             classes += styles['list-group-item-dark'];
         }
-
 
         return classes.trim();
     };
