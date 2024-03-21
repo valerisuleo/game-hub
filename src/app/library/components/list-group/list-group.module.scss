@@ -1,8 +1,8 @@
-.listGroupItemDark {
-    color: white;
-    background-color: #212529;
+.list-group-item-dark {
+    color: white !important;
+    background-color: #212529 !important;
 
     &:hover {
-        background-color: #6c757d;
+        background-color: #6c757d !important;
     }
 }

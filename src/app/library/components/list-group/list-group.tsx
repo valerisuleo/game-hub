@@ -32,7 +32,7 @@ const ListGroupComponent = ({
         }
 
         if (isDarkMode) {
-            classes += `${styles.listGroupItemDark}`;
+            classes += styles['list-group-item-dark'];
         }
 
         return classes.trim();
