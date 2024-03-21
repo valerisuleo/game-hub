@@ -9,13 +9,14 @@ const useGames = () => {
     const { event, outputEvent } = useDataContext();
     const [isLoading, setSpinner] = useState(false);
     const [collection, setCollection] = useState<IGame[]>([]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [queries, setQuery] = useState({
+    const state = {
         platforms: { isActive: false, value: '' },
         genres: { isActive: false, value: '' },
         ordering: { isActive: false, value: '' },
         search: { isActive: false, value: '' },
-    });
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [queries, setQuery] = useState(state);
 
     useEffect(() => {
         if (event?.name) {
@@ -26,6 +27,8 @@ const useGames = () => {
             }
 
             if (name === 'genres') {
+                console.log(event);
+
                 getAll(event);
             }
         }
@@ -55,13 +58,7 @@ const useGames = () => {
                     return updatedQueries;
                 });
             } else {
-                const reset = {
-                    platforms: { isActive: false, value: '' },
-                    genres: { isActive: false, value: '' },
-                    ordering: { isActive: false, value: '' },
-                    search: { isActive: false, value: '' },
-                };
-                setQuery(reset);
+                setQuery(state);
 
                 fetchGames('/games');
             }

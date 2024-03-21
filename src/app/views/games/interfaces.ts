@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IGame {
     id: number;
     name: string;
@@ -23,6 +24,15 @@ export interface IPlatform {
     year_start?: null | number;
     year_end?: null | number;
     games?: IGame[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: any;
+}
+
+export interface IGameHeader {
+    platforms: any[];
+    filters: IGameFilters;
+}
+
+interface IGameFilters {
+    platforms: string;
+    ordering: string;
 }

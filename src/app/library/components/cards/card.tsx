@@ -3,7 +3,7 @@ import { ICard } from './ intefaces';
 const CardComponent = ({ header, body, classes, isDarkMode }: ICard) => {
     const getClasses = () => {
         let className = 'card ';
-        className += `${classes.equalHeight && 'h-100'} ${
+        className += `${classes?.equalHeight && 'h-100'} ${
             isDarkMode && 'text-white bg-secondary'
         }`;
 

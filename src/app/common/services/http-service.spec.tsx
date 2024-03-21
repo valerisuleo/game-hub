@@ -54,7 +54,7 @@ describe('HttpService', () => {
         const responseData = { data: 'deleted data' };
         mock.onDelete(`${url}/${resource.id}`).reply(200, responseData);
 
-        const response: AxiosResponse = await httpService.deleteItem(
+        const response: AxiosResponse = await httpService.delete(
             resource,
             'id'
         );

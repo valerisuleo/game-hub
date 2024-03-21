@@ -1,13 +1,20 @@
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import CardComponent from './card';
+import '@testing-library/jest-dom';
 
 describe('CardComponent', () => {
     const header = { children: 'Header Content' };
     const body = { children: 'Body Content', cardTitle: 'CardComponent Title' };
 
     it('should render the header and body correctly', () => {
-        render(<CardComponent header={header} body={body} isDarkMode={false} className={''} />);
+        render(
+            <CardComponent
+                header={header}
+                body={body}
+                isDarkMode={false}
+                className={''}
+            />
+        );
         expect(screen.getByText(header.children)).toBeInTheDocument();
         expect(screen.getByText(body.cardTitle)).toBeInTheDocument();
         expect(screen.getByText(body.children)).toBeInTheDocument();
@@ -20,7 +27,10 @@ describe('CardComponent', () => {
                 body={{
                     cardTitle: '',
                     children: '',
-                }} isDarkMode={false} className={''}            />
+                }}
+                isDarkMode={false}
+                className={''}
+            />
         );
         expect(screen.getByText(header.children)).toBeInTheDocument();
         expect(screen.queryByText(body.cardTitle)).toBeNull();
@@ -33,7 +43,10 @@ describe('CardComponent', () => {
                 body={body}
                 header={{
                     children: '',
-                }} isDarkMode={false} className={''}            />
+                }}
+                isDarkMode={false}
+                className={''}
+            />
         );
         expect(screen.getByText(body.cardTitle)).toBeInTheDocument();
         expect(screen.getByText(body.children)).toBeInTheDocument();

@@ -7,7 +7,6 @@ import { useTheme } from './common/context/theme';
 import SpinnerComponent from './library/components/spinner/spinner';
 
 const GameRouter = lazy(() => import('./views/games/routes'));
-const ExercisesRouter = lazy(() => import('./views/exercises/routes'));
 
 const RoutingModule = () => {
     const { isDarkMode } = useTheme();
@@ -34,10 +33,6 @@ const RoutingModule = () => {
                                 <Route
                                     path="/games/*"
                                     element={<GameRouter />}
-                                />
-                                <Route
-                                    path="/exercises/*"
-                                    element={<ExercisesRouter />}
                                 />
                             </Routes>
                         </Suspense>

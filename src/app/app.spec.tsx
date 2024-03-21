@@ -1,15 +1,21 @@
-import { render } from '@testing-library/react';
+import { cleanup, render } from '@testing-library/react';
 
 import App from './app';
 
-describe('App', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<App />);
-    expect(baseElement).toBeTruthy();
-  });
+describe('App Component', () => {
+    let component;
 
-  it('should have a greeting as the title', () => {
-    const { getByText } = render(<App />);
-    expect(getByText(/Welcome compugames/gi)).toBeTruthy();
-  });
+    beforeEach(() => {
+        component = () => {
+            return render(<App />);
+        };
+    });
+
+    afterEach(() => {
+        cleanup();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

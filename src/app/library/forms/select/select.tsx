@@ -17,7 +17,7 @@ const SelectComponent = ({
     isDark,
 }: IFormCtrl) => {
     return (
-        <div className="mb-3">
+        <div className={`${isDark && 'bg-dark text-white'} mb-3`}>
             <label htmlFor={name} className="form-label">
                 {startCase(label)}
             </label>

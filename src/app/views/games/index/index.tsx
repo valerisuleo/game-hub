@@ -9,6 +9,7 @@ import { Fragment, useState } from 'react';
 import SpinnerComponent from '../../../library/components/spinner/spinner';
 import { IFormCtrl } from '../../../library/forms/hooks/interfaces';
 import { IEventEmitted } from '../../../common/context/data';
+import Heading from './components/game-heading';
 
 function GameIndex() {
     const { isDarkMode } = useTheme();
@@ -53,6 +54,7 @@ function GameIndex() {
             ...prevState,
             [name]: value,
         }));
+
         // Fetch data based on the new filter
         updateGamesList(item);
         // Check if the value is allPlatforms after fetching data
@@ -67,9 +69,11 @@ function GameIndex() {
 
     return (
         <div className={`row ${isDarkMode && 'bg-dark'}`}>
+            <Heading platforms={platforms} filters={filters} />
+
             <div className="d-flex justify-content-even">
                 {data.map((item, i) => (
-                    <div className="me-3 my-4" key={i}>
+                    <div className="me-3 mb-4" key={i}>
                         <SelectComponent
                             options={item.options}
                             textProp={item.textProp}
@@ -86,7 +90,7 @@ function GameIndex() {
                 ))}
             </div>
 
-            {JSON.stringify(filters)}
+            {/* {JSON.stringify(filters)} */}
 
             <div className="row">
                 {isLoading ? (

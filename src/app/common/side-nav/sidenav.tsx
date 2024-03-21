@@ -27,7 +27,8 @@ const SideNavComponent = () => {
     }
 
     return (
-        <div className="mt-5">
+        <div className={`${isDarkMode && 'text-white'} mt-2`}>
+            <h4 className='ms-2'>Genres</h4>
             <ListGroupComponent {...props} />
         </div>
     );
