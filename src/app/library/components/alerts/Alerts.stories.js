@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AlertsComponent from './alerts';
 
 export default {
-    title: 'Components/AlertsComponent',
+    title: 'Components/Alert',
     component: AlertsComponent,
     tags: ['autodocs'],
     argTypes: {

@@ -2,7 +2,7 @@ import React from 'react';
 import LikeComponent from './like';
 
 export default {
-    title: 'Components/LikeComponent',
+    title: 'Components/Like',
     component: LikeComponent,
     parameters: {
         docs: {

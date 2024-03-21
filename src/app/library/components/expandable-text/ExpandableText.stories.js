@@ -2,7 +2,7 @@ import React from 'react';
 import ExpandableTextComponent from './expandable-text';
 
 export default {
-    title: 'Components/ExpandableTextComponent',
+    title: 'Components/Expandable Text',
     component: ExpandableTextComponent,
 };
 
