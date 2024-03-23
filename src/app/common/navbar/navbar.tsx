@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputGroup from '../../library/forms/input-group/input-group';
@@ -77,7 +78,15 @@ const NavbarComponent = () => {
                     className={`collapse navbar-collapse ${isOpen && 'show'}`}
                     id="navbarNav"
                 >
-                    <div className="d-flex" style={{ width: '100%' }}>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <Link to="/games/react-query" className="nav-link">
+                                Try with React Query!
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <div className="d-flex" style={{ width: '80%' }}>
                         <form
                             onSubmit={handleSubmit}
                             className="flex-grow-1 me-5"
