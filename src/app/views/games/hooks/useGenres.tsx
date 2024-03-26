@@ -13,24 +13,35 @@ const useGenres = () => {
     });
 
     async function fetchGnenres() {
-        const promise = gameService.get();
+        const promise = gameService.get('/genres');
         const { data } = await promise;
+        mapped(data);
         return data;
     }
 
-    useEffect(() => {
-        getGenres();
-    }, []);
-
-    async function getGenres(): Promise<void> {
-        const promise = gameService.get('/genres');
-        const { data } = await promise;
-        const results = data.results.map((item) => ({
+    function mapped(response) {
+        const results = response.results.map((item) => ({
             ...item,
             value: item.id,
         }));
+
         setCollection(results);
+        
     }
+
+    // useEffect(() => {
+    //     getGenres();
+    // }, []);
+
+    // async function getGenres(): Promise<void> {
+    //     const promise = gameService.get('/genres');
+    //     const { data } = await promise;
+    //     const results = data.results.map((item) => ({
+    //         ...item,
+    //         value: item.id,
+    //     }));
+    //     setCollection(results);
+    // }
 
     return { genres: collection };
 };
