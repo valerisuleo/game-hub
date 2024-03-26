@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ReactNode } from 'react';
 
 export interface IDarkMode {
     isDarkMode: boolean;
     className?: string;
 }
-
 
 export interface IClasses {
     custom?: string;
@@ -20,8 +20,12 @@ export interface IClasses {
         | 'dark';
 }
 
-
 export interface Props {
     children: ReactNode;
 }
 
+export interface IReactQuery {
+    key: string;
+    queryGet?: any;
+    mutationCreate?: any;
+}

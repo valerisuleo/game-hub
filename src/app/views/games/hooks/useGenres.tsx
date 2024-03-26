@@ -1,9 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { IGenre } from '../interfaces';
 import { gameService } from '../service';
+import useCustomMutation from '../../../common/hooks/useCustomMutation';
 
 const useGenres = () => {
     const [collection, setCollection] = useState<IGenre[]>([]);
+
+    const { data, errors, isLoading } = useCustomMutation({
+        key: 'genres',
+        queryGet: fetchGnenres,
+    });
+
+    async function fetchGnenres() {
+        const promise = gameService.get();
+        const { data } = await promise;
+        return data;
+    }
 
     useEffect(() => {
         getGenres();
